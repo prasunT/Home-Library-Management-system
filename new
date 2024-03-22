@@ -1,0 +1,98 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Search</title>
+    <!---Bootstrap CSS--->
+    
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+
+<body>
+  <div class="container my-5">
+    <form method="post">
+      <input type="text" placeholder="Book or Author" name="search">
+      <button  class="btn btn-dark btn-sm" name="submit" >Search</button>
+</form>
+<div class="container my-5">
+  <table class="table">
+    <?php
+
+
+
+
+ $con=mysqli_connect('localhost', 'root', '', 'library');
+
+ if(!$con){
+  die(mysqli_error("Error" + $con));
+ }
+
+
+    if(isset($_POST['submit'])){
+      $search=$_POST['search'];
+
+      $sql="Select * from 'books' where id like %$search% or Name like %$search% or Author like %$search% ";
+      $result=mysqli_query($con, $sql);
+
+      if($result){
+        
+      
+      if(mysqli_num_rows($result)>0){
+        echo '
+        <thead>
+        <tr>
+        <th>id</th>
+        <th>Name</th>
+        <th>Author</th>
+        <th>Genre</th>
+        <th>ISBN</th>
+        <th>Edition</th>
+        <th>Publisher</th>
+        <th>Date_of_Publication</th>
+        <th>Lent</th>
+        <th>Lent_to</th>
+        </tr>
+        </thead>'
+        ;
+
+        while($row=mysqli_fetch_assoc($result)){
+        echo '
+        <tbody>
+        <tr>
+        <td>'.$row['id'].'</td>
+        <td>'.$row['Name'].'</td>
+        <td>'.$row['Author'].'</td>
+        <td>'.$row['Genre'].'</td>
+        <td>'.$row['ISBN'].'</td>
+        <td>'.$row['Edition'].'</td>
+        <td>'.$row['Publisher'].'</td>
+        <td>'.$row['Date_of_publication'].'</td>
+        <td>'.$row['Lent'].'</td>
+        <td>'.$row['Lent_to'].'</td>
+
+        </tr>
+        </tbody>'
+        ;
+        }
+      }
+      else{
+        echo '<h2 class=text-danger> Book Not Found</h2>';
+      }}
+
+
+    }
+     ?>
+      
+     
+
+  </table>
+  </div>
+  </div>
+
+
+</body>
+</html>
